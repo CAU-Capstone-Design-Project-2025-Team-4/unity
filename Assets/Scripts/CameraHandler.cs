@@ -32,11 +32,11 @@ namespace Prism3D
             
             switch (mode)
             {
-                case "Skybox" :
+                case "skybox" :
                     Camera.main.clearFlags = CameraClearFlags.Skybox;
                     break;
                 
-                case "SolidColor" :
+                case "solid" :
                     Camera.main.clearFlags = CameraClearFlags.SolidColor;
                     break;
             }
