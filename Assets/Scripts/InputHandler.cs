@@ -41,8 +41,6 @@ namespace Prism3D
 #if UNITY_WEBGL && !UNITY_EDITOR
             WebGLInput.captureAllKeyboardInput = true;
 #endif
-
-            playerInput.enabled = true;
         }
 
         private void DisableInput()
@@ -50,8 +48,6 @@ namespace Prism3D
 #if UNITY_WEBGL && !UNITY_EDITOR
             WebGLInput.captureAllKeyboardInput = false;
 #endif
-
-            playerInput.enabled = false;
         }
 
         private void SwitchCurrentPlayerInputActionMap(string mapNameOrId)
