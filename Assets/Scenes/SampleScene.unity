@@ -387,7 +387,7 @@ MonoBehaviour:
     m_ActionName: 'Free/Look[/Mouse/delta]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Orbit
+  m_DefaultActionMap: orbit
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &410087039
@@ -624,6 +624,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orbitCamera: {fileID: 330585549}
   freeCamera: {fileID: 330585548}
+  useInitialSettings: 1
+  initialCameraMode: orbit
+  initialCameraBackgroundMode: solid
+  initialBackgroundColor: '#FFFFFF'
 --- !u!114 &1275685210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,6 +641,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 330585550}
+  useInitialSettings: 1
+  initialInputEnabled: true
+  initialCameraMode: orbit
 --- !u!114 &1275685211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,6 +657,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 454005711}
+  useInitialSettings: 1
+  initialUrl: http://localhost:8000/model.glb
 --- !u!4 &1275685212
 Transform:
   m_ObjectHideFlags: 0
