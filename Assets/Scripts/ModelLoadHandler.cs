@@ -6,6 +6,8 @@ namespace Prism3D
     public class ModelLoadHandler : MonoBehaviour
     {
         [SerializeField] private Transform parentTransform;
+        [SerializeField] private bool useInitialSettings;
+        [SerializeField] private string initialUrl;
         
         private GltfImport gltfImport;
 
@@ -27,6 +29,13 @@ namespace Prism3D
             {
                 Debug.LogError("Failed to instantiate glb scene");
             }
+        }
+
+        private void Start()
+        {
+            if (!useInitialSettings) return;
+            
+            LoadModel(initialUrl);
         }
     }
 }
