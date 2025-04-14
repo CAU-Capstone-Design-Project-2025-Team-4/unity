@@ -14,11 +14,11 @@ namespace Prism3D
         {
             switch (mode)
             {
-                case "Orbit":
+                case "orbit":
                     currentCamera = orbitCamera;
                     break;
                 
-                case "Free":
+                case "free":
                     currentCamera = freeCamera;
                     break;
             }
