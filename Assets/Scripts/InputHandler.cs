@@ -6,7 +6,10 @@ namespace Prism3D
     public class InputHandler : MonoBehaviour
     {
         [SerializeField] private PlayerInput playerInput;
-
+        [SerializeField] private bool useInitialSettings;
+        [SerializeField] private string initialInputEnabled;
+        [SerializeField] private string initialCameraMode;
+        
         public void EnableInput(string enable)
         {
             switch (enable)
@@ -25,6 +28,14 @@ namespace Prism3D
             SwitchCurrentPlayerInputActionMap(mode);
         }
 
+        private void Start()
+        {
+            if (!useInitialSettings) return;
+            
+            EnableInput(initialInputEnabled);
+            SetCameraMode(initialCameraMode);
+        }
+        
         private void EnableInput()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
