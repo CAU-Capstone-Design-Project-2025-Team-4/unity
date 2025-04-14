@@ -13,7 +13,7 @@ namespace Prism3D
         {
             gltfImport = new GltfImport();
 
-            bool loadSuccess = await gltfImport.Load(url);
+            var loadSuccess = await gltfImport.Load(url);
 
             if (!loadSuccess)
             {
@@ -21,7 +21,7 @@ namespace Prism3D
                 return;
             }
 
-            bool instantiateSuccess = await gltfImport.InstantiateMainSceneAsync(parentTransform);
+            var instantiateSuccess = await gltfImport.InstantiateMainSceneAsync(parentTransform);
 
             if (!instantiateSuccess)
             {
