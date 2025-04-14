@@ -1,0 +1,35 @@
+* text=auto eol=lf
+
+*.cs     text eol=lf
+*.shader text eol=lf
+*.cginc  text eol=lf
+*.hlsl   text eol=lf
+*.compute text eol=lf
+*.txt    text eol=lf
+*.json   text eol=lf
+*.asmdef text eol=lf
+*.rsp    text eol=lf
+*.meta   text eol=lf
+*.uxml   text eol=lf
+*.uss    text eol=lf
+
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.psd    binary
+*.mp3    binary
+*.ogg    binary
+*.wav    binary
+*.mp4    binary
+*.fbx    binary
+*.glb    binary
+*.gltf   binary
+*.prefab binary
+*.unity  binary
+*.mat    binary
+*.anim   binary
+*.controller binary
+*.ttf    binary
+*.otf    binary
+*.dll    binary
+*.exe    binary
