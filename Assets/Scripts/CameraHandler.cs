@@ -1,5 +1,4 @@
 using UnityEngine;
-using ColorUtility = UnityEngine.ColorUtility;
 
 namespace Prism3D
 {
@@ -7,6 +6,10 @@ namespace Prism3D
     {
         [SerializeField] private OrbitCamera orbitCamera;
         [SerializeField] private FreeCamera freeCamera;
+        [SerializeField] private bool useInitialSettings;
+        [SerializeField] private string initialCameraMode;
+        [SerializeField] private string initialCameraBackgroundMode;
+        [SerializeField] private string initialBackgroundColor;
         
         private ICamera currentCamera;
         
@@ -59,6 +62,15 @@ namespace Prism3D
             currentCamera?.SetPositionAndRotation(position, rotation);
         }
 
+        private void Start()
+        {
+            if (!useInitialSettings) return;
+            
+            SetCameraMode(initialCameraMode);
+            SetCameraBackgroundMode(initialCameraBackgroundMode);
+            SetCameraBackgroundColor(initialBackgroundColor);
+        }
+        
         private void Update()
         {
             currentCamera?.OnUpdate();
