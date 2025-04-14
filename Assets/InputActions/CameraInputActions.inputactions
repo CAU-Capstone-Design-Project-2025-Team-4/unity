@@ -2,7 +2,7 @@
     "name": "CameraInputActions",
     "maps": [
         {
-            "name": "Orbit",
+            "name": "orbit",
             "id": "54e2dc51-c2c9-47f2-9b2f-23897406ff1c",
             "actions": [
                 {
@@ -72,7 +72,7 @@
             ]
         },
         {
-            "name": "Free",
+            "name": "free",
             "id": "0f18211e-bde5-41c9-8fa7-59f4af765a62",
             "actions": [
                 {
