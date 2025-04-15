@@ -8,7 +8,6 @@ namespace Prism3D
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private string initialInputEnabled;
-        [SerializeField] private string initialKeyboardInputEnabled;
         [SerializeField] private string initialCameraMode;
         
         public void EnableInput(string enable)
@@ -25,20 +24,6 @@ namespace Prism3D
             }
         }
 
-        public void EnableKeyboardInput(string enable)
-        {
-            switch (enable)
-            {
-                case "true":
-                    EnableKeyboardInput();
-                    break;
-                
-                case "false":
-                    DisableKeyboardInput();
-                    break;
-            }
-        }
-
         public void SetCameraMode(string mode)
         {
             SwitchCurrentPlayerInputActionMap(mode);
@@ -49,34 +34,27 @@ namespace Prism3D
             if (!useInitialSettings) return;
             
             EnableInput(initialInputEnabled);
-            EnableKeyboardInput(initialKeyboardInputEnabled);
             SetCameraMode(initialCameraMode);
         }
         
         private void EnableInput()
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            WebGLInput.captureAllKeyboardInput = true;
+#endif
+
             playerInput.ActivateInput();
         }
 
         private void DisableInput()
         {
-            playerInput.DeactivateInput();
-        }
-
-        private void EnableKeyboardInput()
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            WebGLInput.captureAllKeyboardInput = true;
-#endif
-        }
-
-        private void DisableKeyboardInput()
-        {
 #if UNITY_WEBGL && !UNITY_EDITOR
             WebGLInput.captureAllKeyboardInput = false;
 #endif
+
+            playerInput.DeactivateInput();
         }
-        
+
         private void SwitchCurrentPlayerInputActionMap(string mapNameOrId)
         {
             var inputIsActive = playerInput.inputIsActive ? "true" : "false";

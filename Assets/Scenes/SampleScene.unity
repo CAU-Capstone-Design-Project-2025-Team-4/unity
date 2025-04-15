@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: -10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 330585550}
   useInitialSettings: 1
-  initialInputEnabled: false
+  initialInputEnabled: true
   initialKeyboardInputEnabled: false
   initialCameraMode: orbit
 --- !u!114 &1275685211
@@ -658,7 +658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 454005711}
-  useInitialSettings: 1
+  useInitialSettings: 0
   initialUrl: http://localhost:8000/model.glb
 --- !u!4 &1275685212
 Transform:
