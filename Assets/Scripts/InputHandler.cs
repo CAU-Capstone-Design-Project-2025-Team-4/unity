@@ -8,6 +8,7 @@ namespace Prism3D
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private string initialInputEnabled;
+        [SerializeField] private string initialKeyboardInputEnabled;
         [SerializeField] private string initialCameraMode;
         
         public void EnableInput(string enable)
@@ -17,8 +18,23 @@ namespace Prism3D
                 case "true":
                     EnableInput();
                     break;
+                
                 case "false":
                     DisableInput();
+                    break;
+            }
+        }
+
+        public void EnableKeyboardInput(string enable)
+        {
+            switch (enable)
+            {
+                case "true":
+                    EnableKeyboardInput();
+                    break;
+                
+                case "false":
+                    DisableKeyboardInput();
                     break;
             }
         }
@@ -33,23 +49,36 @@ namespace Prism3D
             if (!useInitialSettings) return;
             
             EnableInput(initialInputEnabled);
+            EnableKeyboardInput(initialKeyboardInputEnabled);
             SetCameraMode(initialCameraMode);
         }
         
         private void EnableInput()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            WebGLInput.captureAllKeyboardInput = true;
-#endif
+            playerInput.enabled = true;
         }
 
         private void DisableInput()
         {
+            playerInput.enabled = false;
+        }
+
+        private void EnableKeyboardInput()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            WebGLInput.captureAllKeyboardInput = true;
+#endif
+            
+        }
+
+        private void DisableKeyboardInput()
+        {
 #if UNITY_WEBGL && !UNITY_EDITOR
             WebGLInput.captureAllKeyboardInput = false;
 #endif
+            
         }
-
+        
         private void SwitchCurrentPlayerInputActionMap(string mapNameOrId)
         {
             playerInput.SwitchCurrentActionMap(mapNameOrId);
