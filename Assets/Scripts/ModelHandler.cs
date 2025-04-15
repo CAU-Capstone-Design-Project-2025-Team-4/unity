@@ -1,7 +1,7 @@
 using UnityEngine;
 using GLTFast;
 
-namespace Prism3D
+namespace Prism
 {
     public class ModelHandler : MonoBehaviour
     {

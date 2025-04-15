@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Prism3D
+namespace Prism
 {
     public interface ICamera
     {
