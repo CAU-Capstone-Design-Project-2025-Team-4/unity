@@ -643,6 +643,7 @@ MonoBehaviour:
   playerInput: {fileID: 330585550}
   useInitialSettings: 1
   initialInputEnabled: false
+  initialKeyboardInputEnabled: false
   initialCameraMode: orbit
 --- !u!114 &1275685211
 MonoBehaviour:
