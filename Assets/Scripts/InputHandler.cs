@@ -55,12 +55,12 @@ namespace Prism3D
         
         private void EnableInput()
         {
-            playerInput.enabled = true;
+            playerInput.ActivateInput();
         }
 
         private void DisableInput()
         {
-            playerInput.enabled = false;
+            playerInput.DeactivateInput();
         }
 
         private void EnableKeyboardInput()
