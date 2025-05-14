@@ -1,9 +1,9 @@
 namespace Prism
 {
     [System.Serializable]
-    public class LoadModelDto
+    public class EnableModelDto
     {
         public string id;
-        public string url;
+        public bool enable;
     }
 }

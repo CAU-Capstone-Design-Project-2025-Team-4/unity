@@ -55,6 +55,11 @@ namespace Prism
             loadedModel = null;
         }
 
+        public void EnableModel(string jsonString)
+        {
+            
+        }
+
         private void Start()
         {
             if (!useInitialSettings) return;
