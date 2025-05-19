@@ -87,7 +87,9 @@ namespace Prism
 
         public void SetModelProperties(string jsonString)
         {
-            var data = JsonUtility.FromJson<>()
+            var data = JsonUtility.FromJson<ModelPropertiesDto>(jsonString);
+            var id = data.id;
+            var 
         }
 
         private void EnableModel(string id, bool enable)

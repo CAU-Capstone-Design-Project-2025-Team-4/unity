@@ -3,8 +3,8 @@ namespace Prism.Dto
     [System.Serializable]
     public class ModelPropertiesDto
     {
-        private string id;
-        private TransformDto transform;
-        private string shader;
+        public string id;
+        public TransformDto transform;
+        public string shader;
     }
 }
