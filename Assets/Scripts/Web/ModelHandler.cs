@@ -3,7 +3,7 @@ using Prism.Web.Dto;
 
 namespace Prism.Web
 {
-    public class ModelHandler
+    public class ModelHandler : MonoBehaviour
     {
         public void SetModelProperties(string jsonString)
         {
@@ -20,12 +20,35 @@ namespace Prism.Web
             model.transform.SetPositionAndRotation(position, rotation);
             model.transform.localScale = scale;
             
-            SetShader(shader);
+            SetShader(model, shader);
         }
 
-        private void SetShader(string shader)
+        private void SetShader(GameObject model, string shader)
         {
-            
+            if (model.TryGetComponent(out Outline outline) == false)
+            {
+                outline = model.AddComponent<Outline>();
+            }
+
+            switch (shader)
+            {
+                case "Highlight":
+                {
+                    outline.enabled = true;
+                    outline.OutlineMode = Outline.Mode.OutlineAll;
+                    outline.OutlineColor = Color.white;
+                    outline.OutlineWidth = 0.1f;
+                    
+                    break;
+                }
+
+                case "None":
+                {
+                    outline.enabled = false;
+                    
+                    break;
+                }
+            }
         }
     }
 }
