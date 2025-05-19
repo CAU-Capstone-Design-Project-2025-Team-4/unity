@@ -5,5 +5,6 @@ namespace Prism
     {
         public string id;
         public string url;
+        public bool enable;
     }
 }
