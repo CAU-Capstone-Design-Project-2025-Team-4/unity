@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GLTFast;
+using Prism.Dto;
 
 namespace Prism
 {

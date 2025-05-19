@@ -1,4 +1,4 @@
-namespace Prism
+namespace Prism.Dto
 {
     [System.Serializable]
     public class EnableModelDto
