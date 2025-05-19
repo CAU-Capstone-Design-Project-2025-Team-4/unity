@@ -85,6 +85,11 @@ namespace Prism
             EnableModel(id, enable);
         }
 
+        public void SetModelProperties(string jsonString)
+        {
+            var data = JsonUtility.FromJson<>()
+        }
+
         private void EnableModel(string id, bool enable)
         {
             if (!loadedModels.ContainsKey(id)) return;
