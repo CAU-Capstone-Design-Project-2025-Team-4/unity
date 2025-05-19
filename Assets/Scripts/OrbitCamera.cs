@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Prism.Web
+namespace Prism
 {
     public class OrbitCamera : MonoBehaviour, ICamera
     {

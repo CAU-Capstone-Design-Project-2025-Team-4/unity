@@ -5,7 +5,7 @@ using Prism.Web.Dto;
 
 namespace Prism.Web
 {
-    public class ModelLoader : MonoBehaviour
+    public class ModelLoadHandler : MonoBehaviour
     {
         [SerializeField] private Transform parentTransform;
         [SerializeField] private bool useInitialSettings;
