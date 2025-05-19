@@ -5,15 +5,15 @@ using Prism.Dto;
 
 namespace Prism
 {
-    public class ModelHandler : MonoBehaviour
+    public class ModelLoader : MonoBehaviour
     {
         [SerializeField] private Transform parentTransform;
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private string initialUrl;
 
-        private readonly Dictionary<string, GameObject> loadedModels = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, GameObject> loadedModels = new();
 
-        private bool isLoading = false;
+        private bool isLoading;
         
         public async void LoadModel(string jsonString)
         {
@@ -89,7 +89,18 @@ namespace Prism
         {
             var data = JsonUtility.FromJson<ModelPropertiesDto>(jsonString);
             var id = data.id;
-            var 
+            
+            if (!loadedModels.TryGetValue(id, out var model)) return;
+
+            var position = new Vector3(data.transform.position.x, data.transform.position.y, data.transform.position.z);
+            var rotation = Quaternion.Euler(data.transform.rotation.x, data.transform.rotation.y, data.transform.rotation.z);
+            var scale = new Vector3(data.transform.scale.x, data.transform.scale.y, data.transform.scale.z);
+            var shader = data.shader;
+            
+            model.transform.SetPositionAndRotation(position, rotation);
+            model.transform.localScale = scale;
+            
+            SetShader(shader);
         }
 
         private void EnableModel(string id, bool enable)
@@ -114,6 +125,11 @@ namespace Prism
         private void DisableModel(GameObject model)
         {
             model.SetActive(false);
+        }
+
+        private void SetShader(string shader)
+        {
+            
         }
 
         private void Start()
