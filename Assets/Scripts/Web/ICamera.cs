@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Prism
+namespace Prism.Web
 {
     public interface ICamera
     {

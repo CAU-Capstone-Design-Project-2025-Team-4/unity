@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Prism
+namespace Prism.Web
 {
     public class InputHandler : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
-using Prism.Dto;
+using Prism.Web.Dto;
 
-namespace Prism
+namespace Prism.Web
 {
     public class CameraHandler : MonoBehaviour
     {

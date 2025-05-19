@@ -1,18 +1,16 @@
-using Prism.Dto;
 using UnityEngine;
+using Prism.Web.Dto;
 
-namespace Prism
+namespace Prism.Web
 {
     public class ModelHandler
     {
-        
-/*
         public void SetModelProperties(string jsonString)
         {
             var data = JsonUtility.FromJson<ModelPropertiesDto>(jsonString);
             var id = data.id;
             
-            if (!loadedModels.TryGetValue(id, out var model)) return;
+            if (!ModelManager.Instance.TryGetModel(id, out var model)) return;
 
             var position = new Vector3(data.transform.position.x, data.transform.position.y, data.transform.position.z);
             var rotation = Quaternion.Euler(data.transform.rotation.x, data.transform.rotation.y, data.transform.rotation.z);
@@ -29,6 +27,5 @@ namespace Prism
         {
             
         }
-*/
     }
 }

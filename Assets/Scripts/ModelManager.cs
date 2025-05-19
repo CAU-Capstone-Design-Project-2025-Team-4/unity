@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Prism.Utility;
 using UnityEngine;
 
 namespace Prism
 {
-    public class ModelManager
+    public class ModelManager : Singleton<ModelManager>
     {
         private readonly Dictionary<string, GameObject> loadedModels = new();
         

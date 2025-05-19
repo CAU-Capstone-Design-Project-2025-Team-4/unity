@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GLTFast;
-using Prism.Dto;
+using Prism.Web.Dto;
 
-namespace Prism
+namespace Prism.Web
 {
     public class ModelLoader : MonoBehaviour
     {
         [SerializeField] private Transform parentTransform;
-        [SerializeField] private ModelManager modelManager;
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private string initialUrl;
         
@@ -26,7 +25,7 @@ namespace Prism
             var url = data.url;
             var enable = data.enable;
             
-            if (modelManager.ContainsModel(id))
+            if (ModelManager.Instance.ContainsModel(id))
             {
                 Debug.LogError("Duplicate model: " + id);
                 
@@ -59,7 +58,7 @@ namespace Prism
                 return;
             }
             
-            modelManager.AddModel(id, modelTransform.gameObject);
+            ModelManager.Instance.AddModel(id, modelTransform.gameObject);
             
             EnableModel(id, enable);
             
@@ -68,11 +67,11 @@ namespace Prism
 
         public void UnloadModel(string id)
         {
-            if (!modelManager.TryGetModel(id, out var model)) return;
+            if (!ModelManager.Instance.TryGetModel(id, out var model)) return;
 
             Destroy(model);
             
-            modelManager.RemoveModel(id);
+            ModelManager.Instance.RemoveModel(id);
         }
 
         public void EnableModel(string jsonString)
@@ -86,15 +85,15 @@ namespace Prism
 
         private void EnableModel(string id, bool enable)
         {
-            if (!modelManager.ContainsModel(id)) return;
+            if (!ModelManager.Instance.ContainsModel(id)) return;
             
             if (enable)
             {
-                EnableModel(modelManager.GetModel(id));
+                EnableModel(ModelManager.Instance.GetModel(id));
             }
             else
             {
-                DisableModel(modelManager.GetModel(id));
+                DisableModel(ModelManager.Instance.GetModel(id));
             }
         }
         

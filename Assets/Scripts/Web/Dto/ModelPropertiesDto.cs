@@ -1,4 +1,4 @@
-namespace Prism.Dto
+namespace Prism.Web.Dto
 {
     [System.Serializable]
     public class ModelPropertiesDto
