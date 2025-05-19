@@ -8,11 +8,10 @@ namespace Prism
     public class ModelLoader : MonoBehaviour
     {
         [SerializeField] private Transform parentTransform;
+        [SerializeField] private ModelManager modelManager;
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private string initialUrl;
-
-        private readonly Dictionary<string, GameObject> loadedModels = new();
-
+        
         private bool isLoading;
         
         public async void LoadModel(string jsonString)
@@ -27,7 +26,7 @@ namespace Prism
             var url = data.url;
             var enable = data.enable;
             
-            if (loadedModels.ContainsKey(id))
+            if (modelManager.ContainsModel(id))
             {
                 Debug.LogError("Duplicate model: " + id);
                 
@@ -60,7 +59,7 @@ namespace Prism
                 return;
             }
             
-            loadedModels.Add(id, modelTransform.gameObject);
+            modelManager.AddModel(id, modelTransform.gameObject);
             
             EnableModel(id, enable);
             
@@ -69,11 +68,11 @@ namespace Prism
 
         public void UnloadModel(string id)
         {
-            if (!loadedModels.TryGetValue(id, out var model)) return;
+            if (!modelManager.TryGetModel(id, out var model)) return;
 
             Destroy(model);
             
-            loadedModels.Remove(id);
+            modelManager.RemoveModel(id);
         }
 
         public void EnableModel(string jsonString)
@@ -85,35 +84,17 @@ namespace Prism
             EnableModel(id, enable);
         }
 
-        public void SetModelProperties(string jsonString)
-        {
-            var data = JsonUtility.FromJson<ModelPropertiesDto>(jsonString);
-            var id = data.id;
-            
-            if (!loadedModels.TryGetValue(id, out var model)) return;
-
-            var position = new Vector3(data.transform.position.x, data.transform.position.y, data.transform.position.z);
-            var rotation = Quaternion.Euler(data.transform.rotation.x, data.transform.rotation.y, data.transform.rotation.z);
-            var scale = new Vector3(data.transform.scale.x, data.transform.scale.y, data.transform.scale.z);
-            var shader = data.shader;
-            
-            model.transform.SetPositionAndRotation(position, rotation);
-            model.transform.localScale = scale;
-            
-            SetShader(shader);
-        }
-
         private void EnableModel(string id, bool enable)
         {
-            if (!loadedModels.ContainsKey(id)) return;
+            if (!modelManager.ContainsModel(id)) return;
             
             if (enable)
             {
-                EnableModel(loadedModels[id]);
+                EnableModel(modelManager.GetModel(id));
             }
             else
             {
-                DisableModel(loadedModels[id]);
+                DisableModel(modelManager.GetModel(id));
             }
         }
         
@@ -126,12 +107,7 @@ namespace Prism
         {
             model.SetActive(false);
         }
-
-        private void SetShader(string shader)
-        {
-            
-        }
-
+        
         private void Start()
         {
             if (!useInitialSettings) return;
