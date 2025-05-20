@@ -143,15 +143,15 @@ namespace Prism.Web
         
         private void EnableModel(string id, bool enable)
         {
-            if (!ModelManager.Instance.ContainsModel(id)) return;
+            if (!ModelManager.Instance.TryGetModel(id, out var model)) return;
             
             if (enable)
             {
-                EnableModel(ModelManager.Instance.GetModel(id));
+                EnableModel(model);
             }
             else
             {
-                DisableModel(ModelManager.Instance.GetModel(id));
+                DisableModel(model);
             }
         }
         
