@@ -16,8 +16,6 @@ namespace Prism.Web
         private readonly Queue<LoadModelDto> loadModelQueue = new();
         private bool isProcessingLoadModelQueue;
         
-        private bool isLoading;
-        
         public void LoadModel(string jsonString)
         {
             var data = JsonUtility.FromJson<LoadModelDto>(jsonString);
