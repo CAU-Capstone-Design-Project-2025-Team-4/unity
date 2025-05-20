@@ -29,7 +29,7 @@ namespace Prism.Web
             
             if (ModelManager.Instance.ContainsModel(id))
             {
-                Debug.LogError("Duplicate model: " + id);
+                Debug.LogError("Duplicate model id: " + id);
                 
                 isLoading = false;
                 

@@ -1,11 +1,9 @@
 namespace Prism.Web.Dto
 {
     [System.Serializable]
-    public class LoadModelDto
+    public class SetModelPropertiesDto
     {
         public string id;
-        public string url;
-        public bool enable;
         public ModelPropertiesDto modelProperties;
     }
 }

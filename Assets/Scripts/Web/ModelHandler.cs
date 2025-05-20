@@ -14,11 +14,11 @@ namespace Prism.Web
         
         public void SetModelProperties(string jsonString)
         {
-            var data = JsonUtility.FromJson<ModelPropertiesDto>(jsonString);
+            var data = JsonUtility.FromJson<SetModelPropertiesDto>(jsonString);
             var id = data.id;
             
             if (!ModelManager.Instance.TryGetModel(id, out var model)) return;
-
+            
             var position = new Vector3(data.transform.position.x, data.transform.position.y, data.transform.position.z);
             var rotation = Quaternion.Euler(data.transform.rotation.x, data.transform.rotation.y, data.transform.rotation.z);
             var scale = new Vector3(data.transform.scale.x, data.transform.scale.y, data.transform.scale.z);
