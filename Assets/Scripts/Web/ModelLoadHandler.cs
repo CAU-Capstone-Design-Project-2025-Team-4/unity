@@ -9,7 +9,9 @@ namespace Prism.Web
     {
         [SerializeField] private Transform parentTransform;
         [SerializeField] private bool useInitialSettings;
+        [SerializeField] private string initialId;
         [SerializeField] private string initialUrl;
+        [SerializeField] private bool initialEnable;
         
         private bool isLoading;
         
@@ -111,7 +113,16 @@ namespace Prism.Web
         {
             if (!useInitialSettings) return;
             
-            LoadModel(initialUrl);
+            var initialLoadModelDto = new LoadModelDto
+            {
+                id = initialId,
+                url = initialUrl,
+                enable = initialEnable
+            };
+
+            var jsonString = JsonUtility.ToJson(initialLoadModelDto);
+            
+            LoadModel(jsonString);
         }
     }
 }
