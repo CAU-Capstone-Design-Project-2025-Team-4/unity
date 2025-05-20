@@ -1,5 +1,6 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using GLTFast;
 using UnityEngine;
 using Prism.Web.Dto;
@@ -10,19 +11,23 @@ namespace Prism.Web
     {
         [SerializeField] private Transform parentTransform;
         [SerializeField] private bool useInitialSettings;
-        [SerializeField] private List<LoadModelDto> loadModelDtos;
+        [SerializeField] private List<LoadModelDto> initialLoadModelDtos;
 
+        private readonly Queue<LoadModelDto> loadModelQueue = new();
+        private bool isProcessingLoadModelQueue;
+        
         private bool isLoading;
         
-        public async Task LoadModel(string jsonString)
+        public void LoadModel(string jsonString)
         {
             var data = JsonUtility.FromJson<LoadModelDto>(jsonString);
-            var id = data.id;
-            var url = data.url;
-            var enable = data.enable;
-            var properties = data.properties;
-            
-            await LoadModel(id, url, enable, properties);
+
+            loadModelQueue.Enqueue(data);
+
+            if (!isProcessingLoadModelQueue)
+            {
+                StartCoroutine(ProcessLoadModelQueue());
+            }
         }
 
         public void UnloadModel(string id)
@@ -52,56 +57,92 @@ namespace Prism.Web
             SetModelProperties(id, properties);
         }
 
-        private async Task LoadModel(string id, string url, bool enable, ModelPropertiesDto properties)
+        private IEnumerator ProcessLoadModelQueue()
         {
-            if (isLoading) return;
+            isProcessingLoadModelQueue = true;
 
-            isLoading = true;
-
-            var gltfImport = new GltfImport();
-            
-            if (ModelManager.Instance.ContainsModel(id))
+            while (loadModelQueue.Count > 0)
             {
-                Debug.LogError("Duplicate model id: " + id);
+                var data = loadModelQueue.Dequeue();
                 
-                isLoading = false;
+                var id = data.id;
+                var url = data.url;
+                var enable = data.enable;
+                var properties = data.properties;
+                
+                if (ModelManager.Instance.ContainsModel(id))
+                {
+                    Debug.LogError("Duplicate model id: " + id);
 
-                return;
+                    continue;
+                }
+
+                var gltfImport = new GltfImport();
+
+                var loadSuccess = false;
+                
+                yield return StartCoroutine(LoadGltfAsync(gltfImport, url, success => loadSuccess = success));
+                
+                if (!loadSuccess)
+                {
+                    Debug.LogError("Failed to load glb: " + url);
+
+                    continue;
+                }
+
+                var modelTransform = new GameObject(id).transform;
+
+                modelTransform.SetParent(parentTransform);
+
+                var instantiateSuccess = false;
+                
+                yield return StartCoroutine(InstantiateGltfAsync(gltfImport, modelTransform, success => instantiateSuccess = success));
+                
+                if (!instantiateSuccess)
+                {
+                    Debug.LogError("Failed to instantiate glb scene");
+                
+                    Destroy(modelTransform.gameObject);
+
+                    continue;
+                }
+            
+                ModelManager.Instance.AddModel(id, modelTransform.gameObject);
+            
+                EnableModel(id, enable);
+            
+                SetModelProperties(id, properties);
+
+                yield return null;
             }
-
-            if (!await gltfImport.Load(url))
-            {
-                Debug.LogError("Failed to load glb: " + url);
-                
-                isLoading = false;
-
-                return;
-            }
-
-            var modelTransform = new GameObject(id).transform;
-
-            modelTransform.SetParent(parentTransform);
-
-            if (!await gltfImport.InstantiateMainSceneAsync(modelTransform))
-            {
-                Debug.LogError("Failed to instantiate glb scene");
-                
-                Destroy(modelTransform.gameObject);
-                
-                isLoading = false;
-
-                return;
-            }
             
-            ModelManager.Instance.AddModel(id, modelTransform.gameObject);
-            
-            EnableModel(id, enable);
-            
-            SetModelProperties(id, properties);
-            
-            isLoading = false;
+            isProcessingLoadModelQueue = false;
         }
 
+        private IEnumerator LoadGltfAsync(GltfImport gltfImport, string url, Action<bool> callback)
+        {
+            var task = gltfImport.Load(url);
+
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            callback(task.Result);
+        }
+        
+        private IEnumerator InstantiateGltfAsync(GltfImport gltfImport, Transform parent, Action<bool> callback)
+        {
+            var task = gltfImport.InstantiateMainSceneAsync(parent);
+    
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+            
+            callback(task.Result);
+        }
+        
         private void EnableModel(string id, bool enable)
         {
             if (!ModelManager.Instance.ContainsModel(id)) return;
@@ -169,18 +210,18 @@ namespace Prism.Web
             }
         }
 
-        private async void Start()
+        private void Start()
         {
             if (!useInitialSettings) return;
 
-            foreach (var loadModelDto in loadModelDtos)
+            foreach (var loadModelDto in initialLoadModelDtos)
             {
-                var id = loadModelDto.id;
-                var url = loadModelDto.url;
-                var enable = loadModelDto.enable;
-                var properties = loadModelDto.properties;
-                
-                await LoadModel(id, url, enable, properties);
+                loadModelQueue.Enqueue(loadModelDto);
+            }
+            
+            if (!isProcessingLoadModelQueue)
+            {
+                StartCoroutine(ProcessLoadModelQueue());
             }
         }
     }

@@ -686,8 +686,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 454005711}
   useInitialSettings: 0
-  loadModelDtos:
-  - id: test_model
+  initialLoadModelDtos:
+  - id: a
     url: http://localhost:8000/model.glb
     enable: 1
     properties:
@@ -696,6 +696,42 @@ MonoBehaviour:
           x: 0
           y: 0
           z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+        scale:
+          x: 1
+          y: 1
+          z: 1
+      shader: highlight
+  - id: b
+    url: http://localhost:8000/model.glb
+    enable: 0
+    properties:
+      transform:
+        position:
+          x: 5
+          y: 0
+          z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+        scale:
+          x: 1
+          y: 1
+          z: 1
+      shader: highlight
+  - id: c
+    url: http://localhost:8000/model.glb
+    enable: 1
+    properties:
+      transform:
+        position:
+          x: 0
+          y: 0
+          z: 5
         rotation:
           x: 0
           y: 0
