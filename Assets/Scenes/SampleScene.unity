@@ -655,7 +655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 330585550}
   useInitialSettings: 1
-  initialInputEnabled: true
+  initialInputEnabled: false
   initialCameraMode: orbit
 --- !u!4 &1275685212
 Transform:
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 454005711}
-  useInitialSettings: 1
+  useInitialSettings: 0
   loadModelDtos:
   - id: test_model
     url: http://localhost:8000/model.glb
