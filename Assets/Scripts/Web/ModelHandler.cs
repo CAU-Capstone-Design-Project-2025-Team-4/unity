@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GLTFast;
 using UnityEngine;
 using Prism.Web.Dto;
@@ -9,63 +10,19 @@ namespace Prism.Web
     {
         [SerializeField] private Transform parentTransform;
         [SerializeField] private bool useInitialSettings;
-        [SerializeField] private List<LoadModelDto> loadModelDto;
+        [SerializeField] private List<LoadModelDto> loadModelDtos;
 
         private bool isLoading;
         
-        public async void LoadModel(string jsonString)
+        public async Task LoadModel(string jsonString)
         {
-            if (isLoading) return;
-            
-            isLoading = true;
-
-            var gltfImport = new GltfImport();
             var data = JsonUtility.FromJson<LoadModelDto>(jsonString);
             var id = data.id;
             var url = data.url;
             var enable = data.enable;
             var properties = data.properties;
             
-            if (ModelManager.Instance.ContainsModel(id))
-            {
-                Debug.LogError("Duplicate model id: " + id);
-                
-                isLoading = false;
-                
-                return;
-            }
-
-            if (!await gltfImport.Load(url))
-            {
-                Debug.LogError("Failed to load glb: " + url);
-                
-                isLoading = false;
-                
-                return;
-            }
-
-            var modelTransform = new GameObject(id).transform;
-
-            modelTransform.SetParent(parentTransform);
-
-            if (!await gltfImport.InstantiateMainSceneAsync(modelTransform))
-            {
-                Debug.LogError("Failed to instantiate glb scene");
-                
-                Destroy(modelTransform.gameObject);
-                
-                isLoading = false;
-                
-                return;
-            }
-            
-            ModelManager.Instance.AddModel(id, modelTransform.gameObject);
-            
-            EnableModel(id, enable);
-            
-            
-            
-            isLoading = false;
+            await LoadModel(id, url, enable, properties);
         }
 
         public void UnloadModel(string id)
@@ -84,6 +41,65 @@ namespace Prism.Web
             var enable = data.enable;
             
             EnableModel(id, enable);
+        }
+
+        public void SetModelProperties(string jsonString)
+        {
+            var data = JsonUtility.FromJson<SetModelPropertiesDto>(jsonString);
+            var id = data.id;
+            var properties = data.properties;
+
+            SetModelProperties(id, properties);
+        }
+
+        private async Task LoadModel(string id, string url, bool enable, ModelPropertiesDto properties)
+        {
+            if (isLoading) return;
+
+            isLoading = true;
+
+            var gltfImport = new GltfImport();
+            
+            if (ModelManager.Instance.ContainsModel(id))
+            {
+                Debug.LogError("Duplicate model id: " + id);
+                
+                isLoading = false;
+
+                return;
+            }
+
+            if (!await gltfImport.Load(url))
+            {
+                Debug.LogError("Failed to load glb: " + url);
+                
+                isLoading = false;
+
+                return;
+            }
+
+            var modelTransform = new GameObject(id).transform;
+
+            modelTransform.SetParent(parentTransform);
+
+            if (!await gltfImport.InstantiateMainSceneAsync(modelTransform))
+            {
+                Debug.LogError("Failed to instantiate glb scene");
+                
+                Destroy(modelTransform.gameObject);
+                
+                isLoading = false;
+
+                return;
+            }
+            
+            ModelManager.Instance.AddModel(id, modelTransform.gameObject);
+            
+            EnableModel(id, enable);
+            
+            SetModelProperties(id, properties);
+            
+            isLoading = false;
         }
 
         private void EnableModel(string id, bool enable)
@@ -109,15 +125,11 @@ namespace Prism.Web
         {
             model.SetActive(false);
         }
-        
-        public void SetModelProperties(string jsonString)
-        {
-            var data = JsonUtility.FromJson<SetModelPropertiesDto>(jsonString);
-            var id = data.id;
-            
+
+        private void SetModelProperties(string id, ModelPropertiesDto properties)
+        {        
             if (!ModelManager.Instance.TryGetModel(id, out var model)) return;
             
-            var properties = data.properties;
             var position = new Vector3(properties.transform.position.x, properties.transform.position.y, properties.transform.position.z);
             var rotation = Quaternion.Euler(properties.transform.rotation.x, properties.transform.rotation.y, properties.transform.rotation.z);
             var scale = new Vector3(properties.transform.scale.x, properties.transform.scale.y, properties.transform.scale.z);
@@ -138,17 +150,17 @@ namespace Prism.Web
 
             switch (shader)
             {
-                case "Highlight":
+                case "highlight":
                 {
                     outline.enabled = true;
                     outline.OutlineMode = Outline.Mode.OutlineAll;
-                    outline.OutlineColor = Color.white;
-                    outline.OutlineWidth = 0.1f;
+                    outline.OutlineColor = Color.red;
+                    outline.OutlineWidth = 5f;
                     
                     break;
                 }
 
-                case "None":
+                case "none":
                 {
                     outline.enabled = false;
                     
@@ -157,60 +169,19 @@ namespace Prism.Web
             }
         }
 
-        private void Start()
+        private async void Start()
         {
             if (!useInitialSettings) return;
 
-            var initialSetModelPropertiesDto = new SetModelPropertiesDto
+            foreach (var loadModelDto in loadModelDtos)
             {
-                id = initialId,
-                properties = new ModelPropertiesDto
-                {
-                    transform = new TransformDto
-                    {
-                        position = new Vector3Dto
-                        {
-                            x = initialPosition.x,
-                            y = initialPosition.y,
-                            z = initialPosition.z
-                        },
-                        rotation = new Vector3Dto
-                        {
-                            x = initialRotation.x,
-                            y = initialRotation.y,
-                            z = initialRotation.z
-                        },
-                        scale = new Vector3Dto
-                        {
-                            x = initialScale.x,
-                            y = initialScale.y,
-                            z = initialScale.z
-                        }
-                    },
-                    shader = initialShader
-                }
-            };
-            
-            var jsonString = JsonUtility.ToJson(initialSetModelPropertiesDto);
-            
-            SetModelProperties(jsonString);
+                var id = loadModelDto.id;
+                var url = loadModelDto.url;
+                var enable = loadModelDto.enable;
+                var properties = loadModelDto.properties;
+                
+                await LoadModel(id, url, enable, properties);
+            }
         }
-        
-        private void Start()
-        {
-            if (!useInitialSettings) return;
-            
-            var initialLoadModelDto = new LoadModelDto
-            {
-                id = initialId,
-                url = initialUrl,
-                enable = initialEnable
-            };
-
-            var jsonString = JsonUtility.ToJson(initialLoadModelDto);
-            
-            LoadModel(jsonString);
-        }
-
     }
 }

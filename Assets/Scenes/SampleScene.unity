@@ -290,7 +290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 454005711}
   lookSpeed: 10
-  zoomSpeed: 10
+  zoomSpeed: 50
   smoothSpeed: 10
   minDistance: 2
   maxDistance: 20
@@ -613,7 +613,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1275685212}
-  - component: {fileID: 1275685211}
   - component: {fileID: 1275685213}
   - component: {fileID: 1275685210}
   - component: {fileID: 1275685209}
@@ -656,23 +655,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 330585550}
   useInitialSettings: 1
-  initialInputEnabled: false
+  initialInputEnabled: true
   initialCameraMode: orbit
---- !u!114 &1275685211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275685208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f2093efb8b37f44bbb7f231883090b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentTransform: {fileID: 454005711}
-  useInitialSettings: 0
-  initialUrl: http://localhost:8000/model.glb
 --- !u!4 &1275685212
 Transform:
   m_ObjectHideFlags: 0
@@ -700,6 +684,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c07e8bc441495bb9bf4c8ab76742dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentTransform: {fileID: 454005711}
+  useInitialSettings: 1
+  loadModelDtos:
+  - id: test_model
+    url: http://localhost:8000/model.glb
+    enable: 1
+    properties:
+      transform:
+        position:
+          x: 0
+          y: 0
+          z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+        scale:
+          x: 1
+          y: 1
+          z: 1
+      shader: highlight
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
