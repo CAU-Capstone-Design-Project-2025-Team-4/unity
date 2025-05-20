@@ -91,7 +91,7 @@ namespace Prism.Web
             
             var jsonString = JsonUtility.ToJson(initialModelPropertiesDto);
             
-            JsonUtility.FromJson<ModelPropertiesDto>(jsonString);
+            SetModelProperties(jsonString);
         }
     }
 }
