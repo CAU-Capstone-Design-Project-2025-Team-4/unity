@@ -26,6 +26,7 @@ namespace Prism.Web
             var id = data.id;
             var url = data.url;
             var enable = data.enable;
+            var properties = data.properties;
             
             if (ModelManager.Instance.ContainsModel(id))
             {

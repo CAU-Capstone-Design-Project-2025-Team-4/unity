@@ -4,6 +4,6 @@ namespace Prism.Web.Dto
     public class SetModelPropertiesDto
     {
         public string id;
-        public ModelPropertiesDto modelProperties;
+        public ModelPropertiesDto properties;
     }
 }

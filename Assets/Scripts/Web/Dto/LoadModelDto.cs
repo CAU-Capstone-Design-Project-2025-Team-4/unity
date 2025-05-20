@@ -6,6 +6,6 @@ namespace Prism.Web.Dto
         public string id;
         public string url;
         public bool enable;
-        public ModelPropertiesDto modelProperties;
+        public ModelPropertiesDto properties;
     }
 }
