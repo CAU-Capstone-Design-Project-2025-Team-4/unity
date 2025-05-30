@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 using Prism.Web.Dto;
 
@@ -11,6 +12,9 @@ namespace Prism.Web
         [SerializeField] private string initialCameraMode;
         [SerializeField] private string initialCameraBackgroundMode;
         [SerializeField] private string initialBackgroundColor;
+
+        [DllImport("__Internal")]
+        private static extern void CameraUpdateCallback(string jsonPtr);
         
         private ICamera currentCamera;
         
@@ -75,6 +79,8 @@ namespace Prism.Web
         private void Update()
         {
             currentCamera?.OnUpdate();
+
+            CameraUpdateCallback(currentCamera?.GetPositionAndRotation());
         }
 
         private void ApplyCamera()

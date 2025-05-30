@@ -1,3 +1,4 @@
+using Prism.Web.Dto;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,6 +39,14 @@ namespace Prism
         public void OnLook(InputAction.CallbackContext context)
         {
             lookInput = context.ReadValue<Vector2>();
+        }
+
+        public string GetPositionAndRotation()
+        {
+            var positionAndRotationDto = PositionAndRotationDto.FromPositionAndRotation(transform.position, transform.eulerAngles);
+            var jsonPtr = JsonUtility.ToJson(positionAndRotationDto, false);
+
+            return jsonPtr;
         }
 
         public void SetPositionAndRotation(Vector3 position, Vector3 rotation)

@@ -1,3 +1,4 @@
+using Prism.Web.Dto;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,6 +46,14 @@ namespace Prism
         public void OnZoom(InputAction.CallbackContext context)
         {
             zoomInput = context.ReadValue<float>();
+        }
+        
+        public string GetPositionAndRotation()
+        {
+            var positionAndRotationDto = PositionAndRotationDto.FromPositionAndRotation(transform.position, transform.eulerAngles);
+            var jsonPtr = JsonUtility.ToJson(positionAndRotationDto, false);
+
+            return jsonPtr;
         }
         
         public void SetPositionAndRotation(Vector3 position, Vector3 _)
