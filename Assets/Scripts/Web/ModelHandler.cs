@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using GLTFast;
 using UnityEngine;
 using Prism.Web.Dto;
@@ -13,6 +14,9 @@ namespace Prism.Web
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private List<LoadModelDto> initialLoadModelDtos;
 
+        [DllImport("__Internal")]
+        private static extern void ModelLoadCallback(string idPtr);
+        
         private readonly Queue<LoadModelDto> loadModelQueue = new();
         private bool isProcessingLoadModelQueue;
         
@@ -110,6 +114,8 @@ namespace Prism.Web
                 EnableModel(id, enable);
             
                 SetModelProperties(id, properties);
+                
+                ModelLoadCallback(id);
 
                 yield return null;
             }
