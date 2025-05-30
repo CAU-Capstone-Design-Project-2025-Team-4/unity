@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-    ModelLoadCallback = function(idPtr) {
+    ModelLoadCallback: function(idPtr) {
         var id = UTF8ToString(idPtr);
         
         if (typeof window.onModelLoad === "function") {
@@ -7,7 +7,7 @@ mergeInto(LibraryManager.library, {
         }
     },
     
-    CameraUpdateCallback = function(jsonPtr) {
+    CameraUpdateCallback: function(jsonPtr) {
         var jsonString = UTF8ToString(jsonPtr);
         
         if (typeof window.onCameraUpdate === "function") {
