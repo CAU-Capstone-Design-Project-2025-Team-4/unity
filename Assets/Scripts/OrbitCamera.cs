@@ -1,3 +1,4 @@
+using System.Collections;
 using Prism.Web.Dto;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,18 +23,25 @@ namespace Prism
         
         private Vector3 targetPosition;
 
+        private bool isTransitioning;
+        private Coroutine transitionCoroutine;
+        
         private Vector2 lookInput;
         private float zoomInput;
         
         public void OnApply()
         {
-            SetPositionAndRotation(transform.position, transform.eulerAngles);
+            SetPositionAndRotation(transform.position, transform.eulerAngles, 1.0f);
         }
 
         public void OnUpdate()
         {
-            UpdateYawAndPitch();
-            UpdateDistance();
+            if (!isTransitioning)
+            {
+                UpdateYawAndPitch();
+                UpdateDistance();
+            }
+            
             UpdateTargetPosition();
             UpdatePositionAndRotation();
         }
@@ -56,14 +64,61 @@ namespace Prism
             return jsonPtr;
         }
         
-        public void SetPositionAndRotation(Vector3 position, Vector3 _)
+        public void SetPositionAndRotation(Vector3 position, Vector3 _, float interval)
         {
             var vector = target.position - position;
             var direction = vector.normalized;
+            
+            var targetDistance = vector.magnitude;
+            var targetYaw =  Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            var targetPitch = Mathf.Asin(direction.y) * Mathf.Rad2Deg;
 
-            currentDistance = vector.magnitude;
-            currentYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            currentPitch = Mathf.Asin(direction.y) * Mathf.Rad2Deg;
+            if (transitionCoroutine != null)
+            {
+                StopCoroutine(transitionCoroutine);
+            }
+            
+            transitionCoroutine = StartCoroutine(Transition(targetYaw, targetPitch, targetDistance, interval));
+        }
+
+        private IEnumerator Transition(float targetYaw, float targetPitch, float targetDistance, float interval)
+        {
+            isTransitioning = true;
+
+            var startYaw = currentYaw;
+            var startPitch = currentPitch;
+            var startDistance = currentDistance;
+            
+            var yawDiff = Mathf.DeltaAngle(startYaw, targetYaw);
+            targetYaw = startYaw + yawDiff;
+            
+            var elapsedTime = 0f;
+
+            while (elapsedTime < interval)
+            {
+                elapsedTime += Time.deltaTime;
+                
+                var t = elapsedTime / interval;
+                t = Mathf.SmoothStep(0f, 1f, t);
+                
+                currentYaw = Mathf.Lerp(startYaw, targetYaw, t);
+                currentPitch = Mathf.Lerp(startPitch, targetPitch, t);
+                currentDistance = Mathf.Lerp(startDistance, targetDistance, t);
+                
+                currentYaw = Mathf.Repeat(currentYaw, 360f);
+                currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
+                currentDistance = Mathf.Clamp(currentDistance, minDistance, maxDistance);
+                
+                yield return null;
+            }
+            
+            
+            currentYaw = Mathf.Repeat(targetYaw, 360f);
+            currentPitch = Mathf.Clamp(targetPitch, minPitch, maxPitch);
+            currentDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);
+            
+            isTransitioning = false;
+            transitionCoroutine = null;
         }
         
         private void UpdateYawAndPitch()

@@ -18,5 +18,15 @@ namespace Prism.Web.Dto
                 z = vector.z,
             };
         }
+
+        public static Vector3 ToVector3(Vector3Dto dto)
+        {
+            return new Vector3(dto.x, dto.y, dto.z);
+        }
+
+        public Vector3 ToVector3()
+        {
+            return new Vector3(x, y, z);
+        }
     }
 }

@@ -115,7 +115,9 @@ namespace Prism.Web
             
                 SetModelProperties(id, properties);
                 
+#if UNITY_WEBGL && !UNITY_EDITOR
                 ModelLoadCallback(id);
+#endif
 
                 yield return null;
             }

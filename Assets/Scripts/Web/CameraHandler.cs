@@ -12,6 +12,9 @@ namespace Prism.Web
         [SerializeField] private string initialCameraMode;
         [SerializeField] private string initialCameraBackgroundMode;
         [SerializeField] private string initialBackgroundColor;
+        [SerializeField] private Vector3 initialCameraPosition;
+        [SerializeField] private Vector3 initialCameraRotation;
+        [SerializeField] private float initialInterval;
 
         [DllImport("__Internal")]
         private static extern void CameraUpdateCallback(string jsonPtr);
@@ -60,11 +63,13 @@ namespace Prism.Web
 
         public void SetCameraPositionAndRotation(string jsonString)
         {
-            var data = JsonUtility.FromJson<PositionAndRotationDto>(jsonString);
-            var position = new Vector3(data.position.x, data.position.y, data.position.z);
-            var rotation = new Vector3(data.rotation.x, data.rotation.y, data.rotation.z);
+            var data = JsonUtility.FromJson<SetCameraPositionAndRotationDto>(jsonString);
+            var positionAndRotation = data.positionAndRotation;
+            var position = positionAndRotation.position.ToVector3();
+            var rotation = positionAndRotation.rotation.ToVector3();
+            var interval = data.interval;
             
-            currentCamera?.SetPositionAndRotation(position, rotation);
+            currentCamera?.SetPositionAndRotation(position, rotation, interval);
         }
 
         private void Start()
@@ -74,13 +79,16 @@ namespace Prism.Web
             SetCameraMode(initialCameraMode);
             SetCameraBackgroundMode(initialCameraBackgroundMode);
             SetCameraBackgroundColor(initialBackgroundColor);
+            currentCamera?.SetPositionAndRotation(initialCameraPosition, initialCameraRotation, initialInterval);
         }
         
         private void Update()
         {
             currentCamera?.OnUpdate();
-
+        
+#if UNITY_WEBGL && !UNITY_EDITOR
             CameraUpdateCallback(currentCamera?.GetPositionAndRotation());
+#endif
         }
 
         private void ApplyCamera()
