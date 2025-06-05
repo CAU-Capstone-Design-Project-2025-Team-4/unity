@@ -638,9 +638,12 @@ MonoBehaviour:
   orbitCamera: {fileID: 330585549}
   freeCamera: {fileID: 330585548}
   useInitialSettings: 1
-  initialCameraMode: orbit
+  initialCameraMode: free
   initialCameraBackgroundMode: solid
   initialBackgroundColor: '#FFFFFF'
+  initialCameraPosition: {x: 10, y: 10, z: 10}
+  initialCameraRotation: {x: 0, y: 90, z: 0}
+  initialInterval: 5
 --- !u!114 &1275685210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,8 +658,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 330585550}
   useInitialSettings: 1
-  initialInputEnabled: false
-  initialCameraMode: orbit
+  initialInputEnabled: true
+  initialCameraMode: free
 --- !u!4 &1275685212
 Transform:
   m_ObjectHideFlags: 0
@@ -685,7 +688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 454005711}
-  useInitialSettings: 0
+  useInitialSettings: 1
   initialLoadModelDtos:
   - id: a
     url: http://localhost:8000/model.glb
