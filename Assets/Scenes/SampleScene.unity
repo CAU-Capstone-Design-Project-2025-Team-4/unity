@@ -688,7 +688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 454005711}
-  useInitialSettings: 1
+  useInitialSettings: 0
   initialLoadModelDtos:
   - id: a
     url: http://localhost:8000/model.glb
