@@ -5,25 +5,15 @@ using System.Runtime.InteropServices;
 using GLTFast;
 using UnityEngine;
 using Prism.Web.Dto;
-using UnityEngine.Events;
 
 namespace Prism.Web
 {
     public class ModelHandler : MonoBehaviour
     {
-        [Serializable]
-        public class ModelLoadEvent : UnityEvent<string, GameObject> { }
-        
-        [Serializable]
-        public class ModelUnloadEvent : UnityEvent<string> { }
-        
         [SerializeField] private Transform parentTransform;
         [SerializeField] private bool useInitialSettings;
         [SerializeField] private List<LoadModelDto> initialLoadModelDtos;
 
-        [SerializeField] private ModelLoadEvent onModelLoaded;
-        [SerializeField] private ModelUnloadEvent onModelUnloaded;
-        
         [DllImport("__Internal")]
         private static extern void ModelLoadCallback(string idPtr);
         
@@ -45,8 +35,6 @@ namespace Prism.Web
         public void UnloadModel(string id)
         {
             if (!ModelManager.Instance.TryGetModel(id, out var model)) return;
-
-            onModelUnloaded?.Invoke(id);
             
             Destroy(model);
             
@@ -126,8 +114,6 @@ namespace Prism.Web
                 EnableModel(id, enable);
             
                 SetModelProperties(id, properties);
-                
-                onModelLoaded?.Invoke(id, modelTransform.gameObject);
                 
 #if UNITY_WEBGL && !UNITY_EDITOR
                 ModelLoadCallback(id);
