@@ -46,6 +46,15 @@ namespace Prism
             UpdatePositionAndRotation();
         }
         
+        public bool IsMoving()
+        {
+            if (!transform.hasChanged) return false;
+            
+            transform.hasChanged = false;
+
+            return true;
+        }
+
         public void OnLook(InputAction.CallbackContext context)
         {
             lookInput = context.ReadValue<Vector2>();    
@@ -111,7 +120,6 @@ namespace Prism
                 
                 yield return null;
             }
-            
             
             currentYaw = Mathf.Repeat(targetYaw, 360f);
             currentPitch = Mathf.Clamp(targetPitch, minPitch, maxPitch);

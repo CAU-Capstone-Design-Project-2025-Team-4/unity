@@ -85,9 +85,12 @@ namespace Prism.Web
         private void Update()
         {
             currentCamera?.OnUpdate();
-        
+
 #if UNITY_WEBGL && !UNITY_EDITOR
-            CameraUpdateCallback(currentCamera?.GetPositionAndRotation());
+            if (currentCamera?.isMoving() ?? false)
+            {
+                CameraUpdateCallback(currentCamera?.GetPositionAndRotation());
+            }
 #endif
         }
 

@@ -38,6 +38,15 @@ namespace Prism
             }
         }
 
+        public bool IsMoving()
+        {
+            if (!transform.hasChanged) return false;
+            
+            transform.hasChanged = false;
+
+            return true;
+        }
+
         public void OnMove(InputAction.CallbackContext context)
         {
             moveInput = context.ReadValue<Vector2>();
