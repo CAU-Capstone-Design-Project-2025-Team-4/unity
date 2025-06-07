@@ -87,7 +87,7 @@ namespace Prism.Web
             currentCamera?.OnUpdate();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            if (currentCamera?.isMoving() ?? false)
+            if (currentCamera?.IsMoving() ?? false)
             {
                 CameraUpdateCallback(currentCamera?.GetPositionAndRotation());
             }
