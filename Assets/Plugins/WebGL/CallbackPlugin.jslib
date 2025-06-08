@@ -3,7 +3,7 @@ mergeInto(LibraryManager.library, {
         var id = UTF8ToString(idPtr);
         
         if (typeof window.onModelLoad === "function") {
-            window.onModelLoaded(id);
+            window.onModelLoad(id);
         }
     },
     
