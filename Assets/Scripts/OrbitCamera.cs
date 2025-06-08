@@ -16,6 +16,11 @@ namespace Prism
         [SerializeField] private float maxDistance;
         [SerializeField] private float minPitch;
         [SerializeField] private float maxPitch;
+        [SerializeField] private float positionThreshold = 0.01f;
+        [SerializeField] private float rotationThreshold = 0.01f;
+
+        private Vector3 prevPosition;
+        private Vector3 prevRotation;
 
         private float currentYaw;
         private float currentPitch;
@@ -36,6 +41,8 @@ namespace Prism
 
         public void OnUpdate()
         {
+            UpdatePrevPositionAndRotation();
+            
             if (!isTransitioning)
             {
                 UpdateYawAndPitch();
@@ -48,11 +55,10 @@ namespace Prism
         
         public bool IsMoving()
         {
-            if (!transform.hasChanged) return false;
+            var positionMoved = Vector3.Distance(transform.position, prevPosition) > positionThreshold;
+            var rotationMoved = Vector3.Distance(transform.eulerAngles, prevRotation) > rotationThreshold;
             
-            transform.hasChanged = false;
-
-            return true;
+            return positionMoved || rotationMoved;
         }
 
         public void OnLook(InputAction.CallbackContext context)
@@ -156,6 +162,12 @@ namespace Prism
         {
             transform.position = Vector3.Slerp(transform.position, targetPosition, smoothSpeed * Time.deltaTime);
             transform.LookAt(target);
+        }
+        
+        private void UpdatePrevPositionAndRotation()
+        {
+            prevPosition = transform.position;
+            prevRotation = transform.eulerAngles;
         }
     }
 }
