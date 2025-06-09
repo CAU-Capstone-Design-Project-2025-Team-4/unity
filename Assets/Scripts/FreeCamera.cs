@@ -73,18 +73,6 @@ namespace Prism
 
         public void SetPositionAndRotation(Vector3 position, Vector3 rotation, float interval)
         {
-            if (interval <= 0f)
-            {
-                transform.position = position;
-                transform.rotation = Quaternion.Euler(rotation);
-            
-                currentYaw = transform.rotation.y;
-                currentPitch = transform.rotation.x;
-                targetPosition = position;
-
-                return;
-            }
-
             if (transitionCoroutine != null)
             {
                 StopCoroutine(transitionCoroutine);
