@@ -276,6 +276,8 @@ MonoBehaviour:
   smoothSpeed: 10
   minPitch: -89
   maxPitch: 89
+  positionThreshold: 0.01
+  rotationThreshold: 0.01
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +298,8 @@ MonoBehaviour:
   maxDistance: 20
   minPitch: -89
   maxPitch: 89
+  positionThreshold: 0.01
+  rotationThreshold: 0.01
 --- !u!114 &330585550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,8 +645,8 @@ MonoBehaviour:
   initialCameraMode: orbit
   initialCameraBackgroundMode: solid
   initialBackgroundColor: '#FFFFFF'
-  initialCameraPosition: {x: 0, y: 0, z: -10}
-  initialCameraRotation: {x: 0, y: 0, z: 0}
+  initialCameraPosition: {x: 0, y: 2, z: -10}
+  initialCameraRotation: {x: 35, y: 7, z: 123}
   initialInterval: 1
 --- !u!114 &1275685210
 MonoBehaviour:
