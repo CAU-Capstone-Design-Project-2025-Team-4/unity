@@ -78,8 +78,8 @@ namespace Prism
                 transform.position = position;
                 transform.rotation = Quaternion.Euler(rotation);
             
-                currentYaw = rotation.y;
-                currentPitch = rotation.x;
+                currentYaw = transform.rotation.y;
+                currentPitch = transform.rotation.x;
                 targetPosition = position;
 
                 return;
