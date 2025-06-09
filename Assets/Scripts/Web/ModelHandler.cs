@@ -76,6 +76,10 @@ namespace Prism.Web
                 {
                     Debug.LogError("Duplicate model id: " + id);
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+                    ModelLoadCallback(id);
+#endif
+
                     continue;
                 }
 
