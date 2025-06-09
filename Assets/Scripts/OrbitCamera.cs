@@ -36,7 +36,7 @@ namespace Prism
         
         public void OnApply()
         {
-            SetPositionAndRotation(transform.position, transform.eulerAngles, 1.0f);
+            SetPositionAndRotation(transform.position, transform.eulerAngles, 0f);
         }
 
         public void OnUpdate()
@@ -86,7 +86,7 @@ namespace Prism
             
             var targetDistance = vector.magnitude;
             var targetYaw =  Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            var targetPitch = Mathf.Asin(direction.y) * Mathf.Rad2Deg;
+            var targetPitch = Mathf.Asin(-direction.y) * Mathf.Rad2Deg;
 
             if (transitionCoroutine != null)
             {

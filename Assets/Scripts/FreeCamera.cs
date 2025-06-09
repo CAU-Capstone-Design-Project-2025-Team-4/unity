@@ -31,7 +31,7 @@ namespace Prism
         
         public void OnApply()
         {
-            SetPositionAndRotation(transform.position, transform.eulerAngles, 1.0f);
+            SetPositionAndRotation(transform.position, transform.eulerAngles, 0f);
         }
 
         public void OnUpdate()
