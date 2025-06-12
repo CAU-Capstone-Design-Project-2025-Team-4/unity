@@ -91,6 +91,11 @@ namespace Prism
             
             var targetYaw = targetRotation.y;
             var targetPitch = targetRotation.x;
+
+            if (targetPitch > 180f)
+            {
+                targetPitch -= 360f;
+            }
             
             var yawDiff = Mathf.DeltaAngle(startYaw, targetYaw);
             targetYaw = startYaw + yawDiff;
@@ -109,6 +114,7 @@ namespace Prism
                 this.targetPosition = currentPosition;
                 
                 currentYaw = Mathf.Lerp(startYaw, targetYaw, t);
+                currentYaw = Mathf.Repeat(currentYaw, 360f);
                 currentPitch = Mathf.Lerp(startPitch, targetPitch, t);
                 currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
                 
@@ -119,7 +125,7 @@ namespace Prism
             
             transform.position = targetPosition;
             this.targetPosition = targetPosition;
-            currentYaw = targetYaw;
+            currentYaw = Mathf.Repeat(targetYaw, 360f);
             currentPitch = Mathf.Clamp(targetPitch, minPitch, maxPitch);
             transform.rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
             
@@ -130,6 +136,7 @@ namespace Prism
         private void UpdateRotation()
         {
             currentYaw += lookInput.x * lookSpeed * Time.deltaTime;
+            currentYaw = Mathf.Repeat(currentYaw, 360f);
             currentPitch -= lookInput.y * lookSpeed * Time.deltaTime;
             currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
 

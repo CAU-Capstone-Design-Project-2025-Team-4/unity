@@ -641,12 +641,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orbitCamera: {fileID: 330585549}
   freeCamera: {fileID: 330585548}
-  useInitialSettings: 1
+  useInitialSettings: 0
   initialCameraMode: orbit
   initialCameraBackgroundMode: solid
   initialBackgroundColor: '#FFFFFF'
   initialCameraPosition: {x: 0, y: 2, z: -10}
-  initialCameraRotation: {x: 35, y: 7, z: 123}
+  initialCameraRotation: {x: 330, y: 0, z: 0}
   initialInterval: 1
 --- !u!114 &1275685210
 MonoBehaviour:
@@ -661,7 +661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 330585550}
-  useInitialSettings: 1
+  useInitialSettings: 0
   initialInputEnabled: false
   initialCameraMode: orbit
 --- !u!4 &1275685212
