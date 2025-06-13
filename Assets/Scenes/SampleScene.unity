@@ -695,7 +695,7 @@ MonoBehaviour:
   useInitialSettings: 0
   initialLoadModelDtos:
   - id: a
-    url: http://localhost:8000/model.glb
+    url: http://localhost:8000/camera.glb
     enable: 1
     properties:
       transform:
@@ -711,14 +711,14 @@ MonoBehaviour:
           x: 1
           y: 1
           z: 1
-      shader: highlight
+      shader: none
   - id: b
-    url: http://localhost:8000/model.glb
-    enable: 0
+    url: http://localhost:8000/camera_lens.glb
+    enable: 1
     properties:
       transform:
         position:
-          x: 5
+          x: 0
           y: 0
           z: 0
         rotation:
@@ -731,14 +731,14 @@ MonoBehaviour:
           z: 1
       shader: highlight
   - id: c
-    url: http://localhost:8000/model.glb
+    url: http://localhost:8000/camera_lock.glb
     enable: 1
     properties:
       transform:
         position:
           x: 0
           y: 0
-          z: 5
+          z: 0
         rotation:
           x: 0
           y: 0
